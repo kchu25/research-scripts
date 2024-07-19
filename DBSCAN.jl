@@ -13,6 +13,13 @@ function RangeQuery(DB, distFunc, query_ind, eps)
     return neighbors
 end
 
+#=
+DBSCAN
+DB: A p x n data matrix where p is the 
+    number features and n the number of datapoints
+
+=#
+
 function DBSCAN(DB, distFunc; eps=5, minPts=3)
     C = 0           # cluster counter
     N = size(DB, 2) # 
