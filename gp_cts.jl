@@ -10,7 +10,6 @@ function create_covariance_matrix(X, λ, σ, noise)
     for i in 1:n
         for j in 1:i
             K[i, j] = kernel(X[i, :], X[j, :], λ, σ)
-            # K[i, j] = pkernel(X[i, :], X[j, :], 3)
             K[j, i] = K[i, j]
         end
         K[i, i] += noise^2
@@ -25,12 +24,10 @@ function create_cross_covariance_matrix(X, X_new, λ, σ)
     for i in 1:n
         for j in 1:n_new
             K[i, j] = kernel(X[i, :], X_new[j, :], λ, σ)
-            # K[i, j] = pkernel(X[i, :], X_new[j, :], 3)
         end
     end
     return K
 end
-
 
 # Set the random seed for reproducibility
 Random.seed!(1234)
