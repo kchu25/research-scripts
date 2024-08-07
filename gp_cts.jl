@@ -1,21 +1,5 @@
 using Random, LinearAlgebra, StatsBase, Plots
 
-# Define the number of input features
-n_features = 1
-
-# Set the random seed for reproducibility
-Random.seed!(1234)
-
-# Generate random input values
-g(x) = 6sin(x) + 0.0001x^6 - x
-f(X) = reduce(vcat, g.(X) .+ randn(size(X,1)) * 0.1)
-
-n_samples = 55
-n_test_samples = 150
-X = randn(n_samples, n_features) .* 3
-y = f(X)
-
-
 function kernel(x1, x2, λ, σ)
     return σ^2 * exp(-norm(x1 - x2)^2 / (2λ^2))
 end
@@ -47,12 +31,24 @@ function create_cross_covariance_matrix(X, X_new, λ, σ)
     return K
 end
 
+
+# Set the random seed for reproducibility
+Random.seed!(1234)
+
+# Generate random input values
+g(x) = 6sin.(x) .+ 0.0001 * x .^ 6 .- x
+f(X) = g.(X) .+ randn(length(X)) * 0.1
+
+n_samples = 55
+n_test_samples = 150
+X = randn(n_samples) .* 3
+y = f(X)
+
 λ = 2
 σ = 25.0
 noise = 12
 
 X_test = collect(-8:0.01:8)
-
 
 K = create_covariance_matrix(X, λ, σ, noise);
 K_starstar = create_covariance_matrix(X_test, λ, σ, 0.0);
