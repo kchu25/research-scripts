@@ -38,7 +38,7 @@ f(X) = g.(X) .+ randn(length(X)) * 0.1
 
 n_samples = 55
 n_test_samples = 150
-X = randn(n_samples) .* 3
+X = randn(n_samples) .* 2
 y = f(X)
 
 λ = 2
@@ -47,11 +47,23 @@ noise = 12
 
 X_test = collect(-8:0.01:8)
 
-K = create_covariance_matrix(X, λ, σ, noise);
-K_starstar = create_covariance_matrix(X_test, λ, σ, 0.0);
-K_star_X = create_cross_covariance_matrix(X, X_test, λ, σ);
+function return_essentials(X, X_test, y, λ, σ, noise)
+    K = create_covariance_matrix(X, λ, σ, noise);
+    K_starstar = create_covariance_matrix(X_test, λ, σ, 0.0);
+    K_star_X = create_cross_covariance_matrix(X, X_test, λ, σ);
+    K_inv = inv(K)
+    mu(x) = (create_cross_covariance_matrix(X, x, λ, σ)' * inv(K) * y)[1,1]
+    sig(x) = begin
+        K_starstar = create_covariance_matrix(x, λ, σ, 0.0)
+        K_star_X = create_cross_covariance_matrix(X, x, λ, σ)
+        return ((K_starstar - K_star_X' * K_inv * K_star_X)[1,1] |> sqrt)[1,1]
+    end
+    return K, K_starstar, K_star_X, K_inv, mu, sig
+end
 
-K_inv = inv(K)
+K, K_starstar, K_star_X, K_inv, mu, sig = 
+    return_essentials(X, X_test, y, λ, σ, noise)
+
 μ = K_star_X' * K_inv * y
 Σ = K_starstar - K_star_X' * K_inv * K_star_X
 
@@ -59,3 +71,17 @@ K_inv = inv(K)
 plot(X_test, f(X_test), label="True function")
 plot!(X_test, μ, ribbon=sqrt.(diag(Σ)), fillalpha=0.2, label="Predictive distribution")
 scatter!(X, y, label="Data")
+
+
+# using Distributions
+# pt = randn(1,1)
+# n = Normal(0,1)
+
+# x_star = f(X_test) |> maximum
+# cdf(n, sum(pt))
+# mu(pt)
+# sig(pt)
+
+# function ei(pt)
+#     mu_here = mu(pt)
+#     (mu_here - x_star)cdf()
