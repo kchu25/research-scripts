@@ -19,7 +19,7 @@ function filter_high_IC_pwms(
     ic_thresh = float_type(1.0)
 )::Vector{Int}
     pfms = pfms |> cpu
-    pfms_array = [pfms[:, :, 1, i] for i in axes(pfms, 4)]
+    pfms_array = [@view pfms[:, :, 1, i] for i in axes(pfms, 4)]
     pfms_avg_ic_values = pfms_avg_ic.(pfms_array)
     return findall(pfms_avg_ic_values .> ic_thresh)
 end
