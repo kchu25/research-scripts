@@ -1,3 +1,13 @@
+"""
+Approach:
+    Use two pointers (i for the shorter tuple and j for the longer one).
+    Store the indices in the longer tuple where matches occur.
+    Return a tuple (is_subseq, indices), where:
+        is_subseq is true if the shorter tuple is a subsequence.
+        indices contains the positions in the longer tuple where the match happens.
+"""
+
+
 function is_subsequence_with_indices(short, long)
     i, j = 1, 1
     indices = Int[]  # Store matching indices
