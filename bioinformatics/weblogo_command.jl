@@ -38,13 +38,47 @@ Base.run(`weblogo
         -D transfac 
         -f $fp 
         -n 40 
-        -F png 
+        -F png_print 
         -s large 
+        --title " "
+        --title-fontsize 72
+        --fineprint ""
         --errorbars NO 
-        --fineprint " " 
-        --resolution 96 
-        --fontsize 18 
-        --number-fontsize 14
+        --resolution 600 
+        --fontsize 48 
+        --number-fontsize 42
         --color-scheme classic 
+        --aspect-ratio 2.1
+        --stack-width 82
+        --number-interval 60 
         -o $fp.png`
         );
+
+
+Base.run(`weblogo 
+        -D transfac 
+        -f $fp 
+        -n 40 
+        -F png_print 
+        -s large 
+        --title " "
+        --title-fontsize 12
+        --fineprint ""
+        --errorbars NO 
+        --resolution 600 
+        --fontsize 24 
+        --number-fontsize 16
+        --color-scheme classic 
+        --aspect-ratio 3.75
+        --stack-width 24
+        --number-interval 5 
+        --show-yaxis YES
+        -o $fp.png`
+        );
+
+        
+"""
+--number-interval 50: so no number in the x-axis
+--aspect-ratio: Ratio of stack height to width (default: 5)
+--stack-width: Width of a logo stack (default: 10.8)
+"""
