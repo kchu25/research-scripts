@@ -51,3 +51,6 @@ end
 # e.g. 
 fastapath = "./fasta.fa"
 data_2_dummy(dna_reads)
+
+
+######################################
